@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A clean, no-login reading roadmap for key AI papers from seq2seq to modern reasoning models.">
+  <meta name="color-scheme" content="light dark">
+  <title>AI Papers Reading Roadmap</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --bg-gradient: radial-gradient(1200px 420px at 10% -10%, #e7eefc 0%, rgba(231, 238, 252, 0) 55%),
+                     radial-gradient(1200px 420px at 90% -15%, #eaf6f1 0%, rgba(234, 246, 241, 0) 56%),
+                     #f4f6f9;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --text: #0f1720;
+      --muted: #4f5b69;
+      --border: #d9e1ec;
+      --accent: #1768ff;
+      --accent-soft: #e8f0ff;
+      --focus: #245eff;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --shadow: 0 10px 30px rgba(15, 23, 32, 0.05);
+      --maxw: 980px;
+      --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b0f14;
+        --bg-gradient: radial-gradient(1200px 420px at 10% -10%, rgba(33, 61, 112, 0.42) 0%, rgba(33, 61, 112, 0) 58%),
+                       radial-gradient(1200px 420px at 90% -15%, rgba(20, 81, 64, 0.36) 0%, rgba(20, 81, 64, 0) 58%),
+                       #0b0f14;
+        --surface: #121923;
+        --surface-2: #151f2a;
+        --text: #e6ebf2;
+        --muted: #a6b1be;
+        --border: #263446;
+        --accent: #6ba2ff;
+        --accent-soft: rgba(107, 162, 255, 0.18);
+        --focus: #87b3ff;
+        --shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg-gradient);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .page {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 20px clamp(14px, 2vw, 24px) 44px;
+    }
+
+    .hero {
+      background: color-mix(in srgb, var(--surface) 85%, transparent);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: clamp(18px, 3.4vw, 28px);
+      backdrop-filter: saturate(1.1) blur(3px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 12px 0 8px;
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      max-width: 65ch;
+      font-size: clamp(0.94rem, 1.2vw, 1rem);
+    }
+
+    .stats {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .stat-chip {
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .phase-nav {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: thin;
+    }
+
+    .phase-nav a {
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface-2);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 10px;
+      white-space: nowrap;
+    }
+
+    .phase-nav a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .phase-nav a:focus-visible,
+    .paper-card:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .list-wrap {
+      margin-top: 16px;
+      display: grid;
+      gap: 14px;
+    }
+
+    section {
+      background: color-mix(in srgb, var(--surface) 92%, transparent);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-title {
+      margin: 4px 4px 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .papers {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .paper-card {
+      text-decoration: none;
+      color: inherit;
+      display: grid;
+      grid-template-columns: minmax(34px, auto) 1fr auto;
+      gap: 12px;
+      align-items: start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 11px 12px;
+      transition: border-color 0.18s ease, transform 0.18s ease;
+    }
+
+    .paper-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .index {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      padding-top: 2px;
+      min-width: 26px;
+    }
+
+    .title-row {
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .paper-title {
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.38;
+      letter-spacing: -0.005em;
+      word-break: break-word;
+    }
+
+    .year {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 2px 7px;
+      line-height: 1.3;
+    }
+
+    .meta {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--muted);
+      word-break: break-word;
+    }
+
+    .go {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1;
+      padding-top: 2px;
+      font-weight: 700;
+    }
+
+    .footer {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: right;
+    }
+
+    @media (max-width: 760px) {
+      .paper-card {
+        grid-template-columns: 1fr auto;
+      }
+
+      .index {
+        display: none;
+      }
+
+      .go {
+        align-self: center;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .page {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .hero {
+        border-radius: 14px;
+      }
+
+      section {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <span class="eyebrow">AI roadmap</span>
+      <h1>AI Papers Reading Roadmap</h1>
+      <p class="subtitle">A focused, no-login list of foundational and frontier papers. Open any paper directly in a new tab. This page is static and does not collect data.</p>
+      <div class="stats" aria-label="Roadmap stats">
+        <span class="stat-chip">18 papers</span>
+        <span class="stat-chip">7 phases</span>
+        <span class="stat-chip">2014-2025</span>
+      </div>
+      <nav class="phase-nav" aria-label="Jump to phase">
+        <a href="#phase-1">Foundations</a>
+        <a href="#phase-2">Transformer Era</a>
+        <a href="#phase-3">Scaling</a>
+        <a href="#phase-4">Alignment</a>
+        <a href="#phase-5">Efficient/Open</a>
+        <a href="#phase-6">Reasoning</a>
+        <a href="#phase-7">Frontier</a>
+      </nav>
+    </header>
+
+    <div class="list-wrap">
+      <section id="phase-1" aria-labelledby="phase-1-title">
+        <h2 id="phase-1-title" class="section-title">Phase 1 - Foundations</h2>
+        <ul class="papers">
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/1409.3215" target="_blank" rel="noopener noreferrer">
+              <span class="index">01</span>
+              <span>
+                <span class="title-row"><span class="paper-title">Sequence to Sequence Learning with Neural Networks</span><span class="year">2014</span></span>
+                <span class="meta">Sutskever et al. - Encoder-decoder backbone used before Transformers.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/1409.0473" target="_blank" rel="noopener noreferrer">
+              <span class="index">02</span>
+              <span>
+                <span class="title-row"><span class="paper-title">Neural Machine Translation by Jointly Learning to Align and Translate</span><span class="year">2014</span></span>
+                <span class="meta">Bahdanau et al. - Introduced attention, a key prerequisite for Transformers.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section id="phase-2" aria-labelledby="phase-2-title">
+        <h2 id="phase-2-title" class="section-title">Phase 2 - The Transformer Era</h2>
+        <ul class="papers">
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener noreferrer">
+              <span class="index">03</span>
+              <span>
+                <span class="title-row"><span class="paper-title">Attention Is All You Need</span><span class="year">2017</span></span>
+                <span class="meta">Vaswani et al. - Introduced the Transformer architecture.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/1810.04805" target="_blank" rel="noopener noreferrer">
+              <span class="index">04</span>
+              <span>
+                <span class="title-row"><span class="paper-title">BERT: Pre-training of Deep Bidirectional Transformers</span><span class="year">2018</span></span>
+                <span class="meta">Devlin et al. - Made encoder-based fine-tuning mainstream.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+          <li>
+            <a class="paper-card" href="https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf" target="_blank" rel="noopener noreferrer">
+              <span class="index">05</span>
+              <span>
+                <span class="title-row"><span class="paper-title">Language Models are Unsupervised Multitask Learners (GPT-2)</span><span class="year">2019</span></span>
+                <span class="meta">Radford et al. - Scaled decoder-only language modeling.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section id="phase-3" aria-labelledby="phase-3-title">
+        <h2 id="phase-3-title" class="section-title">Phase 3 - Scaling and Few-Shot Learning</h2>
+        <ul class="papers">
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noopener noreferrer">
+              <span class="index">06</span>
+              <span>
+                <span class="title-row"><span class="paper-title">Scaling Laws for Neural Language Models</span><span class="year">2020</span></span>
+                <span class="meta">Kaplan et al. - Quantified how model size, data, and compute interact.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener noreferrer">
+              <span class="index">07</span>
+              <span>
+                <span class="title-row"><span class="paper-title">Language Models are Few-Shot Learners (GPT-3)</span><span class="year">2020</span></span>
+                <span class="meta">Brown et al. - Established in-context learning at scale.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener noreferrer">
+              <span class="index">08</span>
+              <span>
+                <span class="title-row"><span class="paper-title">Training Compute-Optimal Large Language Models (Chinchilla)</span><span class="year">2022</span></span>
+                <span class="meta">Hoffmann et al. - Updated compute-optimal scaling guidance.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section id="phase-4" aria-labelledby="phase-4-title">
+        <h2 id="phase-4-title" class="section-title">Phase 4 - Alignment and RLHF</h2>
+        <ul class="papers">
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener noreferrer">
+              <span class="index">09</span>
+              <span>
+                <span class="title-row"><span class="paper-title">Training Language Models to Follow Instructions with Human Feedback (InstructGPT)</span><span class="year">2022</span></span>
+                <span class="meta">Ouyang et al. - Helpfulness and alignment via RLHF.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/2204.05862" target="_blank" rel="noopener noreferrer">
+              <span class="index">10</span>
+              <span>
+                <span class="title-row"><span class="paper-title">Constitutional AI: Harmlessness from AI Feedback</span><span class="year">2022</span></span>
+                <span class="meta">Bai et al. - RLAIF using model self-critique guided by principles.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section id="phase-5" aria-labelledby="phase-5-title">
+        <h2 id="phase-5-title" class="section-title">Phase 5 - Efficient and Open Models</h2>
+        <ul class="papers">
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/2302.13971" target="_blank" rel="noopener noreferrer">
+              <span class="index">11</span>
+              <span>
+                <span class="title-row"><span class="paper-title">LLaMA: Open and Efficient Foundation Language Models</span><span class="year">2023</span></span>
+                <span class="meta">Touvron et al. - Efficiency-focused open model release.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/2303.08774" target="_blank" rel="noopener noreferrer">
+              <span class="index">12</span>
+              <span>
+                <span class="title-row"><span class="paper-title">GPT-4 Technical Report</span><span class="year">2023</span></span>
+                <span class="meta">OpenAI - Multimodal capabilities and benchmark performance.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/2307.09288" target="_blank" rel="noopener noreferrer">
+              <span class="index">13</span>
+              <span>
+                <span class="title-row"><span class="paper-title">Llama 2: Open Foundation and Fine-Tuned Chat Models</span><span class="year">2023</span></span>
+                <span class="meta">Touvron et al. - Open chat-model recipe with alignment tuning.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section id="phase-6" aria-labelledby="phase-6-title">
+        <h2 id="phase-6-title" class="section-title">Phase 6 - Chain-of-Thought and Reasoning</h2>
+        <ul class="papers">
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener noreferrer">
+              <span class="index">14</span>
+              <span>
+                <span class="title-row"><span class="paper-title">Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</span><span class="year">2022</span></span>
+                <span class="meta">Wei et al. - Demonstrated prompting strategies for stronger reasoning.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/2203.11171" target="_blank" rel="noopener noreferrer">
+              <span class="index">15</span>
+              <span>
+                <span class="title-row"><span class="paper-title">Self-Consistency Improves Chain of Thought Reasoning in Language Models</span><span class="year">2022</span></span>
+                <span class="meta">Wang et al. - Multiple sampled chains improve answer reliability.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section id="phase-7" aria-labelledby="phase-7-title">
+        <h2 id="phase-7-title" class="section-title">Phase 7 - Frontier (2024-2025)</h2>
+        <ul class="papers">
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/2401.02954" target="_blank" rel="noopener noreferrer">
+              <span class="index">16</span>
+              <span>
+                <span class="title-row"><span class="paper-title">DeepSeek LLM: Scaling Open-Source Language Models with Longtermism</span><span class="year">2024</span></span>
+                <span class="meta">DeepSeek-AI - Open-source scaling strategy and long-context focus.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/2412.19437" target="_blank" rel="noopener noreferrer">
+              <span class="index">17</span>
+              <span>
+                <span class="title-row"><span class="paper-title">DeepSeek-V3 Technical Report</span><span class="year">2024</span></span>
+                <span class="meta">DeepSeek-AI - Mixture-of-experts design for cost-efficient training.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+          <li>
+            <a class="paper-card" href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener noreferrer">
+              <span class="index">18</span>
+              <span>
+                <span class="title-row"><span class="paper-title">DeepSeek-R1: Incentivizing Reasoning via Reinforcement Learning</span><span class="year">2025</span></span>
+                <span class="meta">DeepSeek-AI - RL-centered recipe for strong reasoning benchmarks.</span>
+              </span>
+              <span class="go" aria-hidden="true">Open</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+    </div>
+
+    <p class="footer">Static page. No login. No analytics. No data collection.</p>
+  </main>
+</body>
+</html>
