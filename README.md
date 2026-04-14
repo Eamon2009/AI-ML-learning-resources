@@ -1,5 +1,5 @@
 # AI-learning-resources
-
+https://eamon2009.github.io/AI-ML-learning-resources/
 This repository contains a **static, no-login website** that curates a focused reading path through important AI papers.
 
 The site is designed for GitHub Pages and helps learners move from core foundations to modern frontier work in a structured way.
